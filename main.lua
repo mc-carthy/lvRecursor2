@@ -1,4 +1,5 @@
 -- require('src.utils.debug')
+local Animation = require('src.utils.animation')
 
 local heroAtlas
 local heroSprite
@@ -10,6 +11,8 @@ local numFrames = 6
 local xOffset
 local cellWidth = 16
 
+local a = Animation(16, 32, 16, 16, 6, 6, 10)
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     heroAtlas = love.graphics.newImage('src/assets/img/hero.png')
@@ -17,16 +20,7 @@ function love.load()
 end
 
 function love.update(dt)
-    animTime = animTime - dt
-    if animTime <= 0 then
-        animTime = 1 / fps
-        frame = frame + 1
-        if frame > numFrames then
-            frame = 1
-        end
-        xOffset = cellWidth * frame
-        heroSprite:setViewport(xOffset, 32, 16, 16, heroAtlas:getDimensions())
-    end
+    a:update(dt, heroSprite)
 end
 
 function love.draw()
