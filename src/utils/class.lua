@@ -8,6 +8,7 @@ end
 
 function Class:derive(type) 
     local clss = {}
+    clss['__call'] = Class.__call
     clss.type = type
     clss.__index = clss
     clss.super = self
