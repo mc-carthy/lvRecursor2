@@ -4,8 +4,11 @@ local Sprite = require('src.utils.sprite')
 
 local heroAtlas
 local spr
+local idleAnimation
 local walkAnimation
 local swimAnimation
+local punchAnimation
+local punchSfx
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -14,16 +17,21 @@ function love.load()
     idleAnimation = Animation(16, 16, 16, 16, 4, 4, 6)
     walkAnimation = Animation(16, 32, 16, 16, 6, 6, 10)
     swimAnimation = Animation(16, 64, 16, 16, 6, 6, 10)
-    punchAnimation = Animation(16, 80, 16, 16, 3, 3, 8, false)
+    punchAnimation = Animation(16, 80, 16, 16, 3, 3, 10, false)
     spr:addAnimation('idle', idleAnimation)
     spr:addAnimation('walk', walkAnimation)
     spr:addAnimation('swim', swimAnimation)
     spr:addAnimation('punch', punchAnimation)
     spr:animate('idle')
+    punchSfx = love.audio.newSource('src/assets/sfx/hit01.wav', 'static')
 end
 
 function love.update(dt)
     spr:update(dt)
+
+    if spr.currentAnimation == 'punch' and spr:animationFinished() then
+        spr:animate('idle')
+    end
 end
 
 function love.draw()
@@ -31,6 +39,11 @@ function love.draw()
 end
 
 function love.keypressed(key)
+    if key == 'space' and spr.currentAnimation ~= 'punch' then
+        spr:animate('punch')
+        love.audio.stop()
+        love.audio.play(punchSfx)
+    end
     if key == 'escape' then
         love.event.quit()
     end

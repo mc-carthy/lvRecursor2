@@ -27,6 +27,13 @@ function Sprite:animate(animName)
     end
 end
 
+function Sprite:animationFinished()
+    if self.animations[self.currentAnimation] ~= nil then
+        return self.animations[self.currentAnimation].done
+    end
+    return true
+end
+
 function Sprite:update(dt)
     if self.animations[self.currentAnimation] ~= nil then
         self.animations[self.currentAnimation]:update(dt, self.quad)
