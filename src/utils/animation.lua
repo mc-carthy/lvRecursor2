@@ -4,15 +4,13 @@ local Animation = Class:derive("Animation")
 
 function Animation:new(xOffset, yOffset, w, h, numFrames, columnSize, fps, loop)
     self.fps = fps
-    self.timer = 1 / self.fps
-    self.frame = 1
     self.numFrames = numFrames
     self.columnSize = columnSize
     self.startOffset = Vector2(xOffset, yOffset)
     self.offset = Vector2()
     self.size = Vector2(w, h)
     self.loop = loop == nil or loop
-    self.done = false
+    self:reset()
 end
 
 function Animation:update(dt, quad)
@@ -47,6 +45,8 @@ function Animation:reset()
     self.timer = 1 / self.fps
     self.frame = 1
     self.done = false
+    self.offset.x = self.startOffset.x
+    self.offset.y = self.startOffset.y
 end
 
 return Animation
