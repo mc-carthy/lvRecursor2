@@ -17,7 +17,7 @@ function love.load()
     idleAnimation = Animation(16, 16, 16, 16, 4, 4, 6)
     walkAnimation = Animation(16, 32, 16, 16, 6, 6, 10)
     swimAnimation = Animation(16, 64, 16, 16, 6, 6, 10)
-    punchAnimation = Animation(16, 80, 16, 16, { 3, 2, 3, 2, 1}, 3, 10, false)
+    punchAnimation = Animation(16, 80, 16, 16, { 1, 2, 3, 2, 1}, 3, 10, false)
     spr:addAnimation('idle', idleAnimation)
     spr:addAnimation('walk', walkAnimation)
     spr:addAnimation('swim', swimAnimation)
@@ -49,6 +49,12 @@ function love.keypressed(key)
     end
     if key == 'd' or key == 'right' then
         spr:flipH(false)
+    end
+    if key == 'w' or key == 'up' then
+        spr:flipV(true)
+    end
+    if key == 's' or key == 'down' then
+        spr:flipV(false)
     end
     if key == 'escape' then
         love.event.quit()
