@@ -52,8 +52,8 @@ function Animation:reset()
     self.timer = 1 / self.fps
     self.frameIndex = 1
     self.done = false
-    self.offset.x = self.startOffset.x
-    self.offset.y = self.startOffset.y
+    self.offset.x = self.startOffset.x + (self.size.x * ((self.frames[self.frameIndex] - 1) % self.columnSize))
+    self.offset.y = self.startOffset.y + (self.size.y * math.floor((self.frames[self.frameIndex] - 1) / self.columnSize))
 end
 
 return Animation
