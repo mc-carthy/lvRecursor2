@@ -2,9 +2,12 @@
 local Animation = require('src.utils.animation')
 local Sprite = require('src.utils.sprite')
 local Key = require('src.utils.keyboard')
+local Event = require('src.utils.events')
 
 local heroAtlas
 local spr
+local E
+
 local idleAnimation
 local walkAnimation
 local swimAnimation
@@ -14,6 +17,9 @@ local punchSfx
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     Key:hookLoveEvents()
+    E = Event()
+    E:add('onSpace')
+    E:hook('onSpace', onSpace)
     heroAtlas = love.graphics.newImage('src/assets/img/hero.png')
     spr = Sprite(heroAtlas, 100, 100, 16, 16, 10, 10)
     idleAnimation = Animation(16, 16, 16, 16, 4, 4, 6)
@@ -42,11 +48,16 @@ function love.draw()
     spr:draw()
 end
 
+function onSpace()
+    print('Space!')
+end
+
 function _checkKeyInput(dt)
     if Key:keyPressed('space') and spr.currentAnimation ~= 'punch' then
         spr:animate('punch')
         love.audio.stop()
         love.audio.play(punchSfx)
+        E:invoke('onSpace')
     end
     if Key:keyPressed('a') or Key:keyPressed('left') then
         spr:flipH(true)
@@ -59,6 +70,9 @@ function _checkKeyInput(dt)
     end
     if Key:keyPressed('s') or Key:keyPressed('down') then
         spr:flipV(false)
+    end
+    if Key:keyPressed('u') then
+        E:unhook('onSpace', onSpace)
     end
     if Key:keyPressed('escape') then
         love.event.quit()
