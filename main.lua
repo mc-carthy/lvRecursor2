@@ -1,6 +1,7 @@
 -- require('src.utils.debug')
 local Animation = require('src.utils.animation')
 local Sprite = require('src.utils.sprite')
+local Key = require('src.utils.keyboard')
 
 local heroAtlas
 local spr
@@ -12,6 +13,7 @@ local punchSfx
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
+    Key:hookLoveEvents()
     heroAtlas = love.graphics.newImage('src/assets/img/hero.png')
     spr = Sprite(heroAtlas, 100, 100, 16, 16, 10, 10)
     idleAnimation = Animation(16, 16, 16, 16, 4, 4, 6)
@@ -28,6 +30,8 @@ end
 
 function love.update(dt)
     spr:update(dt)
+    _checkKeyInput(dt)
+    Key:update(dt)
 
     if spr.currentAnimation == 'punch' and spr:animationFinished() then
         spr:animate('idle')
@@ -38,25 +42,25 @@ function love.draw()
     spr:draw()
 end
 
-function love.keypressed(key)
-    if key == 'space' and spr.currentAnimation ~= 'punch' then
+function _checkKeyInput(dt)
+    if Key:keyPressed('space') and spr.currentAnimation ~= 'punch' then
         spr:animate('punch')
         love.audio.stop()
         love.audio.play(punchSfx)
     end
-    if key == 'a' or key == 'left' then
+    if Key:keyPressed('a') or Key:keyPressed('left') then
         spr:flipH(true)
     end
-    if key == 'd' or key == 'right' then
+    if Key:keyPressed('d') or Key:keyPressed('right') then
         spr:flipH(false)
     end
-    if key == 'w' or key == 'up' then
+    if Key:keyPressed('w') or Key:keyPressed('up') then
         spr:flipV(true)
     end
-    if key == 's' or key == 'down' then
+    if Key:keyPressed('s') or Key:keyPressed('down') then
         spr:flipV(false)
     end
-    if key == 'escape' then
+    if Key:keyPressed('escape') then
         love.event.quit()
     end
 end
