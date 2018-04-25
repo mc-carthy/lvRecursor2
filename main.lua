@@ -44,6 +44,12 @@ function love.keypressed(key)
         love.audio.stop()
         love.audio.play(punchSfx)
     end
+    if key == 'a' or key == 'left' then
+        spr:flipH(true)
+    end
+    if key == 'd' or key == 'right' then
+        spr:flipH(false)
+    end
     if key == 'escape' then
         love.event.quit()
     end

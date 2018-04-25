@@ -13,6 +13,7 @@ function Sprite:new(atlas, x, y, w, h, sx, sy, rot)
     self.animations = {}
     self.currentAnimation = nil
     self.quad = love.graphics.newQuad(0, 0, w, w, atlas:getDimensions())
+    self.flip = Vector2(1, 1)
 end
 
 function Sprite:addAnimation(name, anim)
@@ -34,6 +35,22 @@ function Sprite:animationFinished()
     return true
 end
 
+function Sprite:flipH(flip)
+    if flip then
+        self.flip.x = -1
+    else
+        self.flip.x = 1
+    end
+end
+
+function Sprite:flipV(flip)
+    if flip then
+        self.flip.y = -1
+    else
+        self.flip.y = 1
+    end
+end
+
 function Sprite:update(dt)
     if self.animations[self.currentAnimation] ~= nil then
         self.animations[self.currentAnimation]:update(dt, self.quad)
@@ -41,7 +58,7 @@ function Sprite:update(dt)
 end
 
 function Sprite:draw()
-    love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.rot, self.scale.x, self.scale.y, self.size.x / 2, self.size.y / 2)
+    love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.rot, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.size.x / 2, self.size.y / 2)
 end
 
 return Sprite
