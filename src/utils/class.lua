@@ -32,7 +32,7 @@ function Class:isType(classType)
     assert(type(classType) == 'string', 'Parameter class must be of type string')
     local base = self
     while base do
-        if base == classType then return true end
+        if base.type == classType then return true end
         base = base.super
     end
     return false
