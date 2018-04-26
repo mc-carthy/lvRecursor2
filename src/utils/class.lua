@@ -16,6 +16,17 @@ function Class:derive(type)
     return clss
 end
 
+function Class:is(class)
+    assert(class ~= nil, 'Parameter class required')
+    assert(type(class) == 'table', 'Parameter class must be of type class')
+    local mt = getmetatable(self)
+    while mt do
+        if mt == class then return true end
+        mt = getmetatable(mt)
+    end
+    return false
+end
+
 function Class:__call(...)
     local inst = setmetatable({}, self)
     inst:new(...)
