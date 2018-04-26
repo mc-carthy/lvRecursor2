@@ -6,10 +6,10 @@ function Class:new()
     print('New from base')
 end
 
-function Class:derive(type) 
+function Class:derive(classType) 
     local clss = {}
     clss['__call'] = Class.__call
-    clss.type = type
+    clss.type = classType
     clss.__index = clss
     clss.super = self
     setmetatable(clss, self)
@@ -23,6 +23,17 @@ function Class:is(class)
     while mt do
         if mt == class then return true end
         mt = getmetatable(mt)
+    end
+    return false
+end
+
+function Class:isType(classType)
+    assert(classType ~= nil, 'Parameter class required')
+    assert(type(classType) == 'string', 'Parameter class must be of type string')
+    local base = self
+    while base do
+        if base == classType then return true end
+        base = base.super
     end
     return false
 end
