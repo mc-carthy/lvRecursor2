@@ -5,11 +5,12 @@ local MainMenu = Scene:derive('Main Menu')
 
 function MainMenu:new(sceneManager)
     self.super:new(sceneMgr)
-    self.button = Button(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 200, 75)
+    self.button = Button(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 50)
 end
 
 function MainMenu:update(dt)
     _checkKeyInput(dt)
+    self.button:update(dt)
 end
 
 function MainMenu:draw()

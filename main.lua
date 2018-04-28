@@ -9,7 +9,8 @@ local scnMgr
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     local pixelFont = love.graphics.newFont('src/assets/fonts/Pixeled.ttf', 16)
-    love.graphics.setFont(pixelFont)
+    local marioFont = love.graphics.newFont('src/assets/fonts/SuperMario256.ttf', 20)
+    love.graphics.setFont(marioFont)
 
     Key:hookLoveEvents()
     scnMgr = SceneManager('src/scenes/', { 'mainMenu', 'testScene' })
