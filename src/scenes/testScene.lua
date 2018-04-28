@@ -1,4 +1,3 @@
-local Key = require('src.utils.keyboard')
 local Animation = require('src.utils.animation')
 local Sprite = require('src.utils.sprite')
 

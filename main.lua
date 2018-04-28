@@ -1,5 +1,5 @@
 -- require('src.utils.debug')
-local Key = require('src.utils.keyboard')
+Key = require('src.utils.keyboard')
 local Gamepad = require('src.utils.gamepad')
 local SceneManager = require('src.utils.sceneManager')
 
@@ -17,8 +17,13 @@ function love.load()
 end
 
 function love.update(dt)
+    if Key:keyPressed(',') then
+        scnMgr:switch('mainMenu')
+    end
+    if Key:keyPressed('.') then
+        scnMgr:switch('testScene')
+    end
     scnMgr:update(dt)
-    _checkKeyInput(dt)
     Key:update(dt)
     gamepad:update(dt)
 end
