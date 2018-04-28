@@ -3,7 +3,7 @@ local Class = {}
 Class.__index = Class
 
 function Class:new() 
-    print('New from base')
+    -- print('New from base')
 end
 
 function Class:derive(classType) 
@@ -51,7 +51,7 @@ end
 local Player = Class:derive('Player')
 
 function Player:new()
-    print('New from Player')
+    -- print('New from Player')
 end
 
 local p1 = Player()

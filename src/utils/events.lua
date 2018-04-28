@@ -62,7 +62,7 @@ function Events:invoke(eventType, ...)
     assert(self.handlers[eventType] ~= nil, 'Event type ' .. eventType .. ' already exists')
     local tbl = self.handlers[eventType]
     for i = 1, #tbl do
-        tbl[i]()
+        tbl[i](...)
     end
 end
 

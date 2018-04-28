@@ -2,11 +2,14 @@
 local Animation = require('src.utils.animation')
 local Sprite = require('src.utils.sprite')
 local Key = require('src.utils.keyboard')
+local Gamepad = require('src.utils.gamepad')
 local Event = require('src.utils.events')
 
 local heroAtlas
 local spr
 local E
+
+local gamepad = Gamepad({'src/assets/gameControllerDb.txt'}, true)
 
 local idleAnimation
 local walkAnimation
@@ -32,12 +35,16 @@ function love.load()
     spr:addAnimation('punch', punchAnimation)
     spr:animate('walk')
     punchSfx = love.audio.newSource('src/assets/sfx/hit01.wav', 'static')
+
+    gamepad.event:hook('controllerAdded', onControllerAdded)
+    gamepad.event:hook('controllerRemoved', onControllerRemoved)
 end
 
 function love.update(dt)
     spr:update(dt)
     _checkKeyInput(dt)
     Key:update(dt)
+    gamepad:update(dt)
 
     if spr.currentAnimation == 'punch' and spr:animationFinished() then
         spr:animate('idle')
@@ -50,6 +57,14 @@ end
 
 function onSpace()
     print('Space!')
+end
+
+function onControllerAdded(joystickId)
+    print('Joystick ' .. joystickId .. ' added!')
+end
+
+function onControllerRemoved(joystickId)
+    print('Joystick ' .. joystickId .. ' removed!')
 end
 
 function _checkKeyInput(dt)
