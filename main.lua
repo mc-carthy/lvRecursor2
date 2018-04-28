@@ -8,9 +8,12 @@ local scnMgr
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
+    local pixelFont = love.graphics.newFont('src/assets/fonts/Pixeled.ttf', 16)
+    love.graphics.setFont(pixelFont)
+
     Key:hookLoveEvents()
     scnMgr = SceneManager('src/scenes/', { 'mainMenu', 'testScene' })
-    scnMgr:switch('testScene')
+    scnMgr:switch('mainMenu')
 
     gamepad.event:hook('controllerAdded', onControllerAdded)
     gamepad.event:hook('controllerRemoved', onControllerRemoved)
