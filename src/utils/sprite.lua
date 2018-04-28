@@ -16,6 +16,13 @@ function Sprite:new(atlas, x, y, w, h, sx, sy, rot)
     self.flip = Vector2(1, 1)
 end
 
+function Sprite:addAnimations(animations)
+    assert(type(animations) == 'table', 'Animations must be in a table')
+    for k, v in pairs(animations) do
+        self:addAnimation(k, v)
+    end
+end
+
 function Sprite:addAnimation(name, anim)
     self.animations[name] = anim
 end
