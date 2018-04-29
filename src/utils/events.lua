@@ -59,7 +59,8 @@ function Events:clear(eventType)
 end
 
 function Events:invoke(eventType, ...)
-    assert(self.handlers[eventType] ~= nil, 'Event type ' .. eventType .. ' already exists')
+    assert(self.handlers[eventType] ~= nil, 'Event type ' .. eventType .. ' does not exist')
+    if self.handlers[eventType] == nil then return end
     local tbl = self.handlers[eventType]
     for i = 1, #tbl do
         tbl[i](...)

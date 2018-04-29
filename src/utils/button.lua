@@ -2,7 +2,7 @@ local Class = require('src.utils.class')
 local Vector2 = require('src.utils.vector2')
 
 -- Buttons are drawn with the origin at the centre
--- 
+-- Use align function to change this default
 local Button = Class:derive('Button')
 
 local function _colour(r, g, b, a)
@@ -21,11 +21,13 @@ function Button:new(x, y, w, h, label)
     self.pos = Vector2(x, y)
     self.size = Vector2(w, h)
     self.label = label or 'Button'
-    self.normal = _colour(191, 0, 0, 191)
-    self.highlight = _colour(191, 0, 0)
+    self.normal = _colour(191, 0, 0)
+    self.highlight = _colour(255, 0, 0)
     self.pressed = _colour(127, 0, 0)
     self.disabled = _colour(95)
     self.buttonColour = self.normal
+    self.prevLeftClick = false
+    self.enabled = true
 end
 
 function Button:align(alignment, value)
@@ -41,17 +43,30 @@ function Button:align(alignment, value)
     end
 end
 
+function Button:enable(enabled)
+    self.enabled = enabled
+    if not enabled then 
+        self.buttonColour = self.disabled 
+    end
+end
+
 function Button:update(dt)
-    x, y = love.mouse.getPosition()
+    if not self.enabled then return end
+    local x, y = love.mouse.getPosition()
+    local leftClick = love.mouse.isDown(1)
     if _mouseInBounds(self, x, y) then
-        if love.mouse.isDown(1) then
+        if leftClick then
             self.buttonColour = self.pressed
         else
             self.buttonColour = self.highlight
+            if self.prevLeftClick then
+                _G.events:invoke("onButtonClick", self)
+            end
         end
     else
         self.buttonColour = self.normal
     end
+    self.prevLeftClick = leftClick
 end
 
 function Button:draw()

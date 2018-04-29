@@ -13,6 +13,29 @@ local swimAnimation
 local punchAnimation
 local punchSfx
 
+local function _checkKeyInput(dt)
+    if Key:keyPressed('space') and spr.currentAnimation and spr.currentAnimation ~= 'punch' then
+        spr:animate('punch')
+        love.audio.stop()
+        love.audio.play(punchSfx)
+    end
+    if Key:keyPressed('a') or Key:keyPressed('left') then
+        spr:flipH(true)
+    end
+    if Key:keyPressed('d') or Key:keyPressed('right') then
+        spr:flipH(false)
+    end
+    if Key:keyPressed('w') or Key:keyPressed('up') then
+        spr:flipV(true)
+    end
+    if Key:keyPressed('s') or Key:keyPressed('down') then
+        spr:flipV(false)
+    end
+    if Key:keyPressed('escape') then
+        love.event.quit()
+    end
+end
+
 function TestScene:new(sceneMgr)
     self.super:new(sceneMgr)
     heroAtlas = love.graphics.newImage('src/assets/img/hero.png')
@@ -41,29 +64,6 @@ end
 function TestScene:draw()
     spr:draw()
     love.graphics.print('Hello from Test Scene', 10, 10)
-end
-
-function _checkKeyInput(dt)
-    if Key:keyPressed('space') and spr.currentAnimation ~= 'punch' then
-        spr:animate('punch')
-        love.audio.stop()
-        love.audio.play(punchSfx)
-    end
-    if Key:keyPressed('a') or Key:keyPressed('left') then
-        spr:flipH(true)
-    end
-    if Key:keyPressed('d') or Key:keyPressed('right') then
-        spr:flipH(false)
-    end
-    if Key:keyPressed('w') or Key:keyPressed('up') then
-        spr:flipV(true)
-    end
-    if Key:keyPressed('s') or Key:keyPressed('down') then
-        spr:flipV(false)
-    end
-    if Key:keyPressed('escape') then
-        love.event.quit()
-    end
 end
 
 return TestScene

@@ -1,5 +1,6 @@
 -- require('src.utils.debug')
 Key = require('src.utils.keyboard')
+local Event = require('src.utils.events')
 local Gamepad = require('src.utils.gamepad')
 local SceneManager = require('src.utils.sceneManager')
 
@@ -11,6 +12,8 @@ function love.load()
     local pixelFont = love.graphics.newFont('src/assets/fonts/Pixeled.ttf', 16)
     local marioFont = love.graphics.newFont('src/assets/fonts/SuperMario256.ttf', 20)
     love.graphics.setFont(marioFont)
+
+    _G.events = Event(false)
 
     Key:hookLoveEvents()
     scnMgr = SceneManager('src/scenes/', { 'mainMenu', 'testScene' })
