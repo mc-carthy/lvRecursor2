@@ -21,11 +21,17 @@ function Button:new(x, y, w, h, label)
     self.pos = Vector2(x, y)
     self.size = Vector2(w, h)
     self.label = label or 'Button'
+
     self.normal = _colour(191, 0, 0)
     self.highlight = _colour(255, 0, 0)
     self.pressed = _colour(127, 0, 0)
-    self.disabled = _colour(95)
+    self.disabled = _colour(63)
     self.buttonColour = self.normal
+    
+    self.normaltext = _colour(255)
+    self.disabledText = _colour(127)
+    self.textColour = self.normaltext
+
     self.prevLeftClick = false
     self.enabled = true
 end
@@ -46,7 +52,10 @@ end
 function Button:enable(enabled)
     self.enabled = enabled
     if not enabled then 
-        self.buttonColour = self.disabled 
+        self.buttonColour = self.disabled
+        self.textColour = self.disabledText
+    else
+        self.textColour = self.normaltext
     end
 end
 
@@ -80,11 +89,12 @@ function Button:draw()
         self.size.y,
         10
     )
-    love.graphics.setColor(pr, pg, pb, pa)
     local f = love.graphics.getFont()
     local fontW = f:getWidth(self.label)
     local fontH = f:getHeight()
+    love.graphics.setColor(self.textColour)
     love.graphics.print(self.label, self.pos.x - fontW / 2, self.pos.y - fontH / 2)
+    love.graphics.setColor(pr, pg, pb, pa)
 end
 
 return Button
