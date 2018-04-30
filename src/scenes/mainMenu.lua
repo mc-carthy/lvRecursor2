@@ -23,23 +23,30 @@ end
 function MainMenu:new(sceneManager)
     self.super:new(sceneMgr)
     local w, h = love.graphics.getDimensions()
-    self.button = Button(w / 2, h / 2 - 60, 100, 40, 'Start')
+    self.startButton = Button(w / 2, h / 2 - 30, 100, 40, 'Start')
+    self.quitButton = Button(w / 2, h / 2 + 30, 100, 40, 'Quit')
     self.click = function(btn) self:onClick(btn) end
 end
 
 function MainMenu:onClick(button)
     print('Button clicked: ' .. button.label)
-    self.sceneManager:switch('testScene')
+    if button == self.startButton then
+        self.sceneManager:switch('testScene')
+    elseif button == self.quitButton then
+        love.event.quit()
+    end
 end
 
 function MainMenu:update(dt)
     _checkKeyInput(self, dt)
-    self.button:update(dt)
+    self.startButton:update(dt)
+    self.quitButton:update(dt)
 end
 
 function MainMenu:draw()
     love.graphics.printf('Main Menu', 0, 25, love.graphics.getWidth(), 'center')
-    self.button:draw()
+    self.startButton:draw()
+    self.quitButton:draw()
 end
 
 
