@@ -56,8 +56,8 @@ function Button:colours(normal, highlight, pressed, disabled)
     assert(type(pressed) == 'table', 'The normal colour must be a table')
     assert(type(disabled) == 'table', 'The disabled colour must be a table')
     self.normal = normal
-    self.highlight = normal
-    self.pressed = normal
+    self.highlight = highlight
+    self.pressed = pressed
     self.disabled = disabled
 end
 

@@ -25,6 +25,7 @@ function MainMenu:new(sceneManager)
     local w, h = love.graphics.getDimensions()
     self.startButton = Button(w / 2, h / 2 - 30, 100, 40, 'Start')
     self.quitButton = Button(w / 2, h / 2 + 30, 100, 40, 'Quit')
+    self.startButton:colours({ 0, 191, 0, 255}, { 0, 255, 0, 255}, { 0, 127, 0, 255}, { 63, 63, 63, 255})
     self.click = function(btn) self:onClick(btn) end
 end
 
