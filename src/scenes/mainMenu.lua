@@ -22,7 +22,7 @@ end
 
 function MainMenu:new(sceneManager)
     self.super:new(sceneMgr)
-    self.button = Button(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 50)
+    self.button = Button(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 50, 'Test label')
 end
 
 function onClick(button)

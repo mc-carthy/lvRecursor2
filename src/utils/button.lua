@@ -17,10 +17,11 @@ local function _mouseInBounds(self, mouseX, mouseY)
         mouseY <= self.pos.y + self.size.y / 2
 end
 
-function Button:new(x, y, w, h, label)
+function Button:new(x, y, w, h, label, textAlign)
     self.pos = Vector2(x, y)
     self.size = Vector2(w, h)
     self.label = label or 'Button'
+    self.textAlign = textAlign or 'center'
 
     self.normal = _colour(191, 0, 0)
     self.highlight = _colour(255, 0, 0)
@@ -110,9 +111,14 @@ function Button:draw()
     local f = love.graphics.getFont()
     local fontW = f:getWidth(self.label)
     local fontH = f:getHeight()
+    local _, lines = f:getWrap(self.label, self.size.x)
     love.graphics.setColor(self.textColour)
-    love.graphics.print(self.label, self.pos.x - fontW / 2, self.pos.y - fontH / 2)
+    -- love.graphics.print(self.label, self.pos.x - fontW / 2, self.pos.y - fontH / 2)
+    love.graphics.printf(self.label, self.pos.x - self.size.x / 2, self.pos.y - (fontH / 2 * #lines), self.size.x, self.textAlign)
     love.graphics.setColor(pr, pg, pb, pa)
+
+    -- love.graphics.line(self.pos.x, self.pos.y - self.size.y / 2, self.pos.x, self.pos.y + self.size.y / 2)
+    -- love.graphics.line(self.pos.x - self.size.x / 2, self.pos.y, self.pos.x + self.size.x / 2, self.pos.y)
 end
 
 return Button
