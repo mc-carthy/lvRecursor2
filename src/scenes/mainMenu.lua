@@ -13,21 +13,23 @@ local function _checkKeyInput(self,dt)
 end
 
 function MainMenu:enter()
-    _G.events:hook('onButtonClick', onClick)
+    _G.events:hook('onButtonClick', self.click)
 end
 
 function MainMenu:exit()
-    _G.events:unhook('onButtonClick', onClick)
+    _G.events:unhook('onButtonClick', self.click)
 end
 
 function MainMenu:new(sceneManager)
     self.super:new(sceneMgr)
-    self.button = Button(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100, 50, 'Test label')
+    local w, h = love.graphics.getDimensions()
+    self.button = Button(w / 2, h / 2 - 60, 100, 40, 'Start')
+    self.click = function(btn) self:onClick(btn) end
 end
 
-function onClick(button)
+function MainMenu:onClick(button)
     print('Button clicked: ' .. button.label)
-    button:enable(false)
+    self.sceneManager:switch('testScene')
 end
 
 function MainMenu:update(dt)
@@ -36,7 +38,7 @@ function MainMenu:update(dt)
 end
 
 function MainMenu:draw()
-    love.graphics.print('Hello from Main Menu', 10, 10)
+    love.graphics.printf('Main Menu', 0, 25, love.graphics.getWidth(), 'center')
     self.button:draw()
 end
 
