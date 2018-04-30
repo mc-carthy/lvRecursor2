@@ -49,6 +49,24 @@ function Button:align(alignment, value)
     end
 end
 
+function Button:colours(normal, highlight, pressed, disabled)
+    assert(type(normal) == 'table', 'The normal colour must be a table')
+    assert(type(highlight) == 'table', 'The normal colour must be a table')
+    assert(type(pressed) == 'table', 'The normal colour must be a table')
+    assert(type(disabled) == 'table', 'The disabled colour must be a table')
+    self.normal = normal
+    self.highlight = normal
+    self.pressed = normal
+    self.disabled = disabled
+end
+
+function Button:textColours(normal, disabled)
+    assert(type(normal) == 'table', 'The normal colour must be a table')
+    assert(type(disabled) == 'table', 'The disabled colour must be a table')
+    self.normaltext = normal
+    self.disabledText = disabled
+end
+
 function Button:enable(enabled)
     self.enabled = enabled
     if not enabled then 
