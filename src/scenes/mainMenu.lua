@@ -1,5 +1,6 @@
 local Scene = require('src.utils.scene')
 local Button = require('src.utils.button')
+local Label = require('src.utils.label')
 
 local MainMenu = Scene:derive('Main Menu')
 
@@ -20,9 +21,11 @@ function MainMenu:enter()
         local w, h = love.graphics.getDimensions()
         local startButton = Button(w / 2, h / 2 - 30, 100, 40, 'Start')
         local quitButton = Button(w / 2, h / 2 + 30, 100, 40, 'Quit')
+        local menuText = Label(w / 2, 30, 300, 40, 'Main Menu')
         startButton:colours({ 0, 191, 0, 255}, { 0, 255, 0, 255}, { 0, 127, 0, 255}, { 63, 63, 63, 255})
         self.em:add(startButton)
         self.em:add(quitButton)
+        self.em:add(menuText)
     end
     _G.events:hook('onButtonClick', self.click)
 end
@@ -51,7 +54,6 @@ function MainMenu:update(dt)
 end
 
 function MainMenu:draw()
-    love.graphics.printf('Main Menu', 0, 25, love.graphics.getWidth(), 'center')
     self.super:draw()
 end
 

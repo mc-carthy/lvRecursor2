@@ -65,7 +65,7 @@ function EntityManager:update(dt)
             if e.onStart then
                 e.onStart()
             end
-        else
+        elseif e.update then
             e:update(dt)
         end
 
