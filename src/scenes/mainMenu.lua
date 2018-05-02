@@ -3,6 +3,8 @@ local Button = require('src.utils.button')
 
 local MainMenu = Scene:derive('Main Menu')
 
+local entered = false
+
 local function _checkKeyInput(self,dt)
     if Key:keyPressed('escape') then
         love.event.quit()
@@ -13,6 +15,15 @@ local function _checkKeyInput(self,dt)
 end
 
 function MainMenu:enter()
+    if not entered then
+        entered = true
+        local w, h = love.graphics.getDimensions()
+        local startButton = Button(w / 2, h / 2 - 30, 100, 40, 'Start')
+        local quitButton = Button(w / 2, h / 2 + 30, 100, 40, 'Quit')
+        startButton:colours({ 0, 191, 0, 255}, { 0, 255, 0, 255}, { 0, 127, 0, 255}, { 63, 63, 63, 255})
+        self.em:add(startButton)
+        self.em:add(quitButton)
+    end
     _G.events:hook('onButtonClick', self.click)
 end
 
@@ -22,32 +33,26 @@ end
 
 function MainMenu:new(sceneManager)
     self.super:new(sceneMgr)
-    local w, h = love.graphics.getDimensions()
-    self.startButton = Button(w / 2, h / 2 - 30, 100, 40, 'Start')
-    self.quitButton = Button(w / 2, h / 2 + 30, 100, 40, 'Quit')
-    self.startButton:colours({ 0, 191, 0, 255}, { 0, 255, 0, 255}, { 0, 127, 0, 255}, { 63, 63, 63, 255})
     self.click = function(btn) self:onClick(btn) end
 end
 
 function MainMenu:onClick(button)
     print('Button clicked: ' .. button.label)
-    if button == self.startButton then
+    if button.label == 'Start' then
         self.sceneManager:switch('testScene')
-    elseif button == self.quitButton then
+    elseif button.label == 'Quit' then
         love.event.quit()
     end
 end
 
 function MainMenu:update(dt)
     _checkKeyInput(self, dt)
-    self.startButton:update(dt)
-    self.quitButton:update(dt)
+    self.super:update(dt)
 end
 
 function MainMenu:draw()
     love.graphics.printf('Main Menu', 0, 25, love.graphics.getWidth(), 'center')
-    self.startButton:draw()
-    self.quitButton:draw()
+    self.super:draw()
 end
 
 
