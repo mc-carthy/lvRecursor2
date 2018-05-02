@@ -4,7 +4,9 @@ local EntityManager = Class:derive('EntityManager')
 
 local function contains(tbl, item)
     for k, v in pairs(tbl) do
-        return true
+        if v == item then
+            return true
+        end
     end
     return false
 end
@@ -17,14 +19,14 @@ function EntityManager:new()
     self.entities = {}
 end
 
-function EM:onEnter()
+function EntityManager:onEnter()
     for i = 1, #self.entities do
         local e = self.entities[i]
         if e.onEnter then e:onEnter() end
     end
 end
 
-function EM:onExit()
+function EntityManager:onExit()
     for i = 1, #self.entities do
         local e = self.entities[i]
         if e.onExit then e:onExit() end
