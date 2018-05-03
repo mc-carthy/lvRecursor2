@@ -1,13 +1,10 @@
 local Class = require('src.utils.class')
 local Vector2 = require('src.utils.vector2')
+local Utils = require('src.utils.utils')
 
 -- Buttons are drawn with the origin at the centre
 -- Use align function to change this default
 local Button = Class:derive('Button')
-
-local function _colour(r, g, b, a)
-    return { r, g or r, b or r, a or 255 }
-end
 
 local function _mouseInBounds(self, mouseX, mouseY)
     return 
@@ -23,14 +20,14 @@ function Button:new(x, y, w, h, text, textAlign)
     self.text = text or 'Button'
     self.textAlign = textAlign or 'center'
 
-    self.normal = _colour(191, 0, 0)
-    self.highlight = _colour(255, 0, 0)
-    self.pressed = _colour(127, 0, 0)
-    self.disabled = _colour(63)
+    self.normal = Utils.colour(191, 0, 0)
+    self.highlight = Utils.colour(255, 0, 0)
+    self.pressed = Utils.colour(127, 0, 0)
+    self.disabled = Utils.colour(63)
     self.buttonColour = self.normal
     
-    self.normaltext = _colour(255)
-    self.disabledText = _colour(127)
+    self.normaltext = Utils.colour(255)
+    self.disabledText = Utils.colour(127)
     self.textColour = self.normaltext
 
     self.prevLeftClick = false
