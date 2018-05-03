@@ -37,8 +37,12 @@ local function _checkKeyInput(dt)
 end
 
 function TestScene:new(sceneMgr)
-    self.super:new(sceneMgr)
+    TestScene.super.new(self, sceneMgr)
     heroAtlas = love.graphics.newImage('src/assets/img/hero.png')
+    punchSfx = love.audio.newSource('src/assets/sfx/hit01.wav', 'static')
+end
+
+function TestScene:enter()
     spr = Sprite(heroAtlas, 100, 100, 16, 16, 10, 10)
     idleAnimation = Animation(16, 16, 16, 16, 4, 4, 6)
     walkAnimation = Animation(16, 32, 16, 16, 6, 6, 10)
@@ -46,23 +50,19 @@ function TestScene:new(sceneMgr)
     punchAnimation = Animation(16, 80, 16, 16, { 1, 2, 3, 2, 1}, 3, 10, false)
     spr:addAnimations({ idle = idleAnimation, walk = walkAnimation, swim = swimAnimation, punch = punchAnimation })
     spr:animate('idle')
-    punchSfx = love.audio.newSource('src/assets/sfx/hit01.wav', 'static')
-end
-
-function TestScene:enter()
-
+    self.em:add(spr)
 end
 
 function TestScene:update(dt)
+    TestScene.super.update(self, dt)
     _checkKeyInput(dt)
-    spr:update(dt)
     if spr.currentAnimation == 'punch' and spr:animationFinished() then
         spr:animate('idle')
     end
 end
 
 function TestScene:draw()
-    spr:draw()
+    TestScene.super.draw(self)
     love.graphics.print('Hello from Test Scene', 10, 10)
 end
 

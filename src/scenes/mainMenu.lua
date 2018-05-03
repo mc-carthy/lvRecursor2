@@ -35,26 +35,26 @@ function MainMenu:exit()
 end
 
 function MainMenu:new(sceneManager)
-    self.super:new(sceneMgr)
+    MainMenu.super.new(self, sceneManager)
     self.click = function(btn) self:onClick(btn) end
 end
 
 function MainMenu:onClick(button)
-    print('Button clicked: ' .. button.label)
-    if button.label == 'Start' then
+    print('Button clicked: ' .. button.text)
+    if button.text == 'Start' then
         self.sceneManager:switch('testScene')
-    elseif button.label == 'Quit' then
+    elseif button.text == 'Quit' then
         love.event.quit()
     end
 end
 
 function MainMenu:update(dt)
     _checkKeyInput(self, dt)
-    self.super:update(dt)
+    MainMenu.super.update(self, dt)
 end
 
 function MainMenu:draw()
-    self.super:draw()
+    MainMenu.super.draw(self)
 end
 
 
