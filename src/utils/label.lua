@@ -17,6 +17,7 @@ function Label:draw()
     local fontW = f:getWidth(self.text)
     local fontH = f:getHeight()
     local _, lines = f:getWrap(self.text, self.size.x)
+    love.graphics.rectangle('line', self.pos.x - self.size.x / 2, self.pos.y - (fontH / 2 * #lines), self.size.x, fontH * #lines)
     love.graphics.printf(self.text, self.pos.x - self.size.x / 2, self.pos.y - (fontH / 2 * #lines), self.size.x, self.textAlign)
 end
 
