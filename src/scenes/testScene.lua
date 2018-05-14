@@ -43,6 +43,7 @@ function TestScene:new(sceneMgr)
 end
 
 function TestScene:enter()
+    TestScene.super.enter(self)
     spr = Sprite(heroAtlas, 100, 100, 16, 16, 10, 10)
     idleAnimation = Animation(16, 16, 16, 16, 4, 4, 6)
     walkAnimation = Animation(16, 32, 16, 16, 6, 6, 10)
@@ -51,6 +52,10 @@ function TestScene:enter()
     spr:addAnimations({ idle = idleAnimation, walk = walkAnimation, swim = swimAnimation, punch = punchAnimation })
     spr:animate('idle')
     self.em:add(spr)
+end
+
+function TestScene:exit()
+    TestScene.super.exit(self)
 end
 
 function TestScene:update(dt)

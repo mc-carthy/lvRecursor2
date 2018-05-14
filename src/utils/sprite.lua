@@ -14,6 +14,7 @@ function Sprite:new(atlas, x, y, w, h, sx, sy, rot)
     self.currentAnimation = nil
     self.quad = love.graphics.newQuad(0, 0, w, w, atlas:getDimensions())
     self.flip = Vector2(1, 1)
+    self.colour = { 255, 255, 255, 255}
 end
 
 function Sprite:addAnimations(animations)
@@ -65,6 +66,7 @@ function Sprite:update(dt)
 end
 
 function Sprite:draw()
+    love.graphics.setColor(self.colour)
     love.graphics.draw(self.atlas, self.quad, self.pos.x, self.pos.y, self.rot, self.scale.x * self.flip.x, self.scale.y * self.flip.y, self.size.x / 2, self.size.y / 2)
 end
 
