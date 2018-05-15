@@ -1,11 +1,16 @@
-local utf8 = require('utf8')
 local Label = require('src/utils/label')
+
+local utf8 = require('utf8')
+local U = require('src/utils/utils')
 
 local TextField = Label:derive('TextField')
 
 function TextField:new(x, y, w, h, text, colour, textAlign)
     TextField.super.new(self, x, y, w, h, text, colour, textAlign)
     self.focus = false
+    self.focusColour = { 127, 127, 127, 255 }
+    self.unfocusColour = { 32, 32, 32, 255 }
+    self.backColour = self.unfocusColour
 
     self.onKeyPressed = function(key)
         if key == 'backspace' then
@@ -28,12 +33,17 @@ function TextField:onExit()
 end
 
 function TextField:setFocus(focus)
-    assert(type(focus) == 'Boolean', 'Focus value should be a boolean')
+    assert(type(focus) == 'boolean', 'Focus value should be a boolean')
     self.focus = focus
+    if focus then
+        self.backColour = self.focusColour
+    else
+        self.backColour = self.unfocusColour
+    end
 end
 
 function TextField:textInput(key)
-    -- if not self.focus or not self.enabled then return end
+    if not self.focus or not self.enabled then return end
     if key == 'backspace' then
         local byteOffset = utf8.offset(self.text, -1)
         if byteOffset then
@@ -45,7 +55,7 @@ function TextField:textInput(key)
 end
 
 function TextField:draw()
-    love.graphics.setColor(63, 63, 63, 255)
+    love.graphics.setColor(self.backColour)
     love.graphics.rectangle('fill', self.pos.x - self.size.x / 2, self.pos.y - self.size.y / 2, self.size.x, self.size.y)
     TextField.super.draw(self)
 end
