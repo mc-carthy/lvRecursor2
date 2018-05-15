@@ -15,9 +15,16 @@ function TextField:new(x, y, w, h, text, colour, textAlign)
     self.onTextInput = function(text)
         self:textInput(text)
     end
+end
 
+function TextField:onEnter()
     _G.events:hook('keyPressed', self.onKeyPressed)
     _G.events:hook('textInput', self.onTextInput)
+end
+
+function TextField:onExit()
+    _G.events:unhook('keyPressed', self.onKeyPressed)
+    _G.events:unhook('textInput', self.onTextInput)
 end
 
 function TextField:setFocus(focus)

@@ -37,7 +37,7 @@ function Events:hook(eventType, callback)
     elseif self.handlers[eventType] == nil then
         self:add(eventType)
     end
-    assert(indexOf(self.handlers[eventType], callback) == -1, 'Callback has already been registered')
+    assert(indexOf(self.handlers[eventType], callback) == -1, 'Callback ' .. eventType .. ' has already been registered')
     self.handlers[eventType][#self.handlers[eventType] + 1] = callback
 end
 

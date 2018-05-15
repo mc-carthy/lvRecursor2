@@ -17,11 +17,11 @@ function Scene:draw()
 end
 
 function Scene:enter()
-    
+    self.em:onEnter()
 end
 
 function Scene:exit()
-
+    self.em:onExit()
 end
 
 function Scene:destroy()

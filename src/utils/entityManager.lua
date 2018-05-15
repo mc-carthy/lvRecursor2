@@ -38,7 +38,7 @@ function EntityManager:add(entity)
     
     entity.layer = entity.layer or 1
     entity.started = entity.started or false
-        
+    entity.enabled = entity.enabled or true
     self.entities[#self.entities + 1] = entity
     
     table.sort(self.entities, compareLayers)
@@ -60,22 +60,25 @@ function EntityManager:update(dt)
             table.remove(self.entities, i)
         end
 
-        if not e.started then
-            e.started = true
-            if e.onStart then
-                e.onStart()
+        if e.enabled then
+            if not e.started then
+                e.started = true
+                if e.onStart then
+                    e.onStart()
+                end
+            elseif e.update then
+                e:update(dt)
             end
-        elseif e.update then
-            e:update(dt)
         end
-
 
     end
 end
 
 function EntityManager:draw()
     for i = 1, #self.entities do
-        self.entities[i]:draw()
+        if self.entities[i].enabled then
+            self.entities[i]:draw()
+        end
     end
 end
 
