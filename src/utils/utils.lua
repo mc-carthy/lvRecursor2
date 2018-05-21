@@ -15,4 +15,12 @@ function Utils.pointInRect(point, rect)
     )
 end
 
+function Utils.mouseInBounds(self, mouseX, mouseY)
+    return 
+        mouseX >= self.pos.x - self.size.x / 2 and
+        mouseX <= self.pos.x + self.size.x / 2 and
+        mouseY >= self.pos.y - self.size.y / 2 and
+        mouseY <= self.pos.y + self.size.y / 2
+end
+
 return Utils

@@ -6,14 +6,6 @@ local Utils = require('src.utils.utils')
 -- Use align function to change this default
 local Button = Class:derive('Button')
 
-local function _mouseInBounds(self, mouseX, mouseY)
-    return 
-        mouseX >= self.pos.x - self.size.x / 2 and
-        mouseX <= self.pos.x + self.size.x / 2 and
-        mouseY >= self.pos.y - self.size.y / 2 and
-        mouseY <= self.pos.y + self.size.y / 2
-end
-
 function Button:new(x, y, w, h, text, textAlign)
     self.pos = Vector2(x, y)
     self.size = Vector2(w, h)
@@ -79,7 +71,7 @@ function Button:update(dt)
     if not self.enabled then return end
     local x, y = love.mouse.getPosition()
     local leftClick = love.mouse.isDown(1)
-    if _mouseInBounds(self, x, y) then
+    if Utils.mouseInBounds(self, x, y) then
         if leftClick then
             self.buttonColour = self.pressed
         else
