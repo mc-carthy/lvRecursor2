@@ -5,6 +5,8 @@ local U = require('src/utils/utils')
 
 local TextField = Label:derive('TextField')
 
+local cursor = '|'
+
 function TextField:new(x, y, w, h, text, colour, textAlign)
     TextField.super.new(self, x, y, w, h, text, colour, textAlign)
     self.focus = false
@@ -34,23 +36,36 @@ end
 
 function TextField:setFocus(focus)
     assert(type(focus) == 'boolean', 'Focus value should be a boolean')
-    self.focus = focus
     if focus then
         self.backColour = self.focusColour
+        if not self.focus then
+            self.text = self.text .. cursor
+        end
     else
         self.backColour = self.unfocusColour
+        if not focus and self.focus then
+            self:removeEndCharacters(1)
+        end
     end
+    self.focus = focus
 end
 
 function TextField:textInput(key)
     if not self.focus or not self.enabled then return end
     if key == 'backspace' then
-        local byteOffset = utf8.offset(self.text, -1)
-        if byteOffset then
-            self.text = string.sub(self.text, 1, byteOffset - 1)
-        end
+        self:removeEndCharacters(2)
+        self.text = self.text .. cursor
     else
+        self:removeEndCharacters(1)
         self.text = self.text .. key
+        self.text = self.text .. cursor
+    end
+end
+
+function TextField:removeEndCharacters(numCharacters)
+    local byteOffset = utf8.offset(self.text, -numCharacters)
+    if byteOffset then
+        self.text = string.sub(self.text, 1, byteOffset - 1)
     end
 end
 
