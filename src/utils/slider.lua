@@ -7,7 +7,8 @@ local Slider = Class:derive('Slider')
 -- x coord is left side, y coord is centre
 function Slider:new(x, y, w, h)
     self.pos = Vector2(x, y)
-    self.size = Vector2(w, h)
+    self.barSize = Vector2(w, h)
+    self.nubSize = Vector2(20, 20)
     self.value = 1
 
     -- Slider colours
@@ -26,12 +27,23 @@ function Slider:draw()
     love.graphics.rectangle(
         'fill', 
         self.pos.x, 
-        self.pos.y - self.size.y / 2, 
-        self.size.x, 
-        self.size.y
+        self.pos.y - self.barSize.y / 2, 
+        self.barSize.x, 
+        self.barSize.y,
+        4,
+        4
     )
     love.graphics.setColor(self.colour)
-    love.graphics.circle('fill', self.pos.x + (self.value * self.size.x), self.pos.y, 10)
+    -- love.graphics.circle('fill', self.pos.x + (self.value * self.barSize.x), self.pos.y, self.nubSize.x / 2)
+    love.graphics.rectangle(
+        'fill', 
+        self.pos.x + (self.value * self.barSize.x) - self.nubSize.x / 2, 
+        self.pos.y - self.nubSize.y / 2, 
+        self.nubSize.x, 
+        self.nubSize.y,
+        self.nubSize.x / 2,
+        self.nubSize.y / 2
+    )
     love.graphics.setColor(pr, pg, pb, pa)
 end
 
