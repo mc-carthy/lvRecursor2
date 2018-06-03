@@ -5,11 +5,13 @@ local Utils = require('src.utils.utils')
 local Slider = Class:derive('Slider')
 
 -- x coord is left side, y coord is centre
-function Slider:new(x, y, w, h)
+function Slider:new(x, y, w, h, id)
     self.pos = Vector2(x, y)
     self.barSize = Vector2(w, h)
+    self.id = id or ''
     self.nubSize = Vector2(10, 20)
     self.value = 0
+    self.prevValue = self.value
     self.xDelta = 0
 
     -- Slider colours
@@ -22,6 +24,10 @@ function Slider:new(x, y, w, h)
 
     self.enabled = true
     self.movingSlider = false
+end
+
+function Slider:getValue()
+    return self.value
 end
 
 function Slider:update(dt)
@@ -37,16 +43,13 @@ function Slider:update(dt)
         }
     ) then
         if leftClick then
-            self.colour = self.pressed
+            -- self.colour = self.pressed
             if not self.prevLeftClick then
                 self.movingSlider = true
                 self.xDelta = self.value * self.barSize.x - mx
             end
         else
-            self.colour = self.highlight
-            -- if self.prevLeftClick then
-            --     _G.events:invoke("onButtonClick", self)
-            -- end
+            -- self.colour = self.highlight
         end
     else
         self.colour = self.normal
@@ -57,11 +60,17 @@ function Slider:update(dt)
     end
 
     if self.movingSlider then
+        self.prevValue = self.value
+        self.colour = self.highlight
         self.value = (mx + self.xDelta) / self.barSize.x
         if self.value > 1 then
             self.value = 1
         elseif self.value < 0 then
             self.value = 0
+        end
+        if self.value ~= self.prevValue then
+            -- print('Value changed from ' .. self.prevValue .. ' to ' .. self.value)
+            _G.events:invoke("onSliderChanged", self)
         end
     end
 

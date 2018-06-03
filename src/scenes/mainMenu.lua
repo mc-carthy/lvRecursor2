@@ -23,7 +23,7 @@ function MainMenu:new(sceneManager)
     local startButton = Button(w / 2, h / 2 - 30, 100, 40, 'Start')
     local quitButton = Button(w / 2, h / 2 + 30, 100, 40, 'Quit')
     local menuText = Label(w / 2, 30, love.graphics.getWidth(), 40, 'Main Menu', { 255, 255, 255, 255})
-    local slider = Slider(love.graphics.getWidth() / 2 - 100, love.graphics.getHeight() - 25, 200, 10)
+    local slider = Slider(love.graphics.getWidth() / 2 - 100, love.graphics.getHeight() - 25, 200, 10, 'TestSlider')
     
     self.textField = TextField(w / 2, h / 2 + 90, 150, 40, 'Text Field', { 195, 195, 195, 255}, 'left')
     startButton:colours({ 0, 191, 0, 255}, { 0, 255, 0, 255}, { 0, 127, 0, 255}, { 63, 63, 63, 255})
@@ -34,16 +34,19 @@ function MainMenu:new(sceneManager)
     self.em:add(slider)
 
     self.click = function(btn) self:onClick(btn) end
+    self.sliderChanged = function(slider) self:onSliderChanged(slider) end
 end
 
 function MainMenu:enter()
     MainMenu.super.enter(self)
     _G.events:hook('onButtonClick', self.click)
+    _G.events:hook('onSliderChanged', self.sliderChanged)
 end
 
 function MainMenu:exit()
     MainMenu.super.exit(self)
     _G.events:unhook('onButtonClick', self.click)
+    _G.events:unhook('onSliderChanged', self.sliderChanged)
 end
 
 function MainMenu:onClick(button)
@@ -53,6 +56,10 @@ function MainMenu:onClick(button)
     elseif button.text == 'Quit' then
         love.event.quit()
     end
+end
+
+function MainMenu:onSliderChanged(slider)
+    print(slider.id .. ' - ' .. slider:getValue())
 end
 
 local prevDown = false
