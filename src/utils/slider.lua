@@ -9,9 +9,11 @@ function Slider:new(x, y, w, h)
     self.pos = Vector2(x, y)
     self.barSize = Vector2(w, h)
     self.nubSize = Vector2(10, 20)
-    self.value = 1
+    self.value = 0
+    self.xDelta = 0
 
     -- Slider colours
+    self.grooveColour = Utils.colour(191)
     self.normal = Utils.colour(191, 0, 0)
     self.highlight = Utils.colour(255, 0, 0)
     self.pressed = Utils.colour(127, 0, 0)
@@ -35,6 +37,11 @@ function Slider:update(dt)
     ) then
         if leftClick then
             self.colour = self.pressed
+            if not self.prevLeftClick then
+                self.xDelta = self.pos.x + (self.value * self.barSize.x) - mx
+            else
+                self.value = (mx + self.xDelta - self.pos.x) / self.barSize.x
+            end
         else
             self.colour = self.highlight
             -- if self.prevLeftClick then
@@ -44,12 +51,12 @@ function Slider:update(dt)
     else
         self.colour = self.normal
     end
-    -- self.prevLeftClick = leftClick
+    self.prevLeftClick = leftClick
 end
 
 function Slider:draw()
     local pr, pg, pb, pa = love.graphics.getColor()
-    love.graphics.setColor(255, 255, 255)
+    love.graphics.setColor(self.grooveColour)
     love.graphics.rectangle(
         'fill', 
         self.pos.x, 

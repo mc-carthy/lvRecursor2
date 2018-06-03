@@ -69,9 +69,9 @@ end
 
 function Button:update(dt)
     if not self.enabled then return end
-    local x, y = love.mouse.getPosition()
+    local mx, my = love.mouse.getPosition()
     local leftClick = love.mouse.isDown(1)
-    if Utils.mouseInBounds(self, x, y) then
+    if Utils.mouseInBounds(self, mx, my) then
         if leftClick then
             self.buttonColour = self.pressed
         else
