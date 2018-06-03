@@ -71,16 +71,15 @@ function Button:update(dt)
     if not self.enabled then return end
     local mx, my = love.mouse.getPosition()
     local leftClick = love.mouse.isDown(1)
-    if Utils.mouseInBounds(self, mx, my) then
-        if leftClick then
-            self.buttonColour = self.pressed
-        else
-            self.buttonColour = self.highlight
-            if self.prevLeftClick then
-                _G.events:invoke("onButtonClick", self)
-            end
+    local inBounds = Utils.mouseInBounds(self, mx, my)
+    if inBounds and not leftClick then
+        if self.prevLeftClick and self.buttonColour == self.pressed then
+            _G.events:invoke("onButtonClick", self)
         end
-    else
+        self.buttonColour = self.highlight
+    elseif inBounds and leftClick and not self.prevLeftClick then
+        self.buttonColour = self.pressed
+    elseif not inBounds then
         self.buttonColour = self.normal
     end
     self.prevLeftClick = leftClick
