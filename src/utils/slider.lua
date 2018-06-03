@@ -14,9 +14,9 @@ function Slider:new(x, y, w, h)
 
     -- Slider colours
     self.grooveColour = Utils.colour(191)
-    self.normal = Utils.colour(191, 0, 0)
-    self.highlight = Utils.colour(255, 0, 0)
-    self.pressed = Utils.colour(127, 0, 0)
+    self.normal = Utils.colour(191, 0, 0, 127)
+    self.highlight = Utils.colour(255, 0, 0, 127)
+    self.pressed = Utils.colour(127, 0, 0, 127)
     self.disabled = Utils.colour(63)
     self.colour = self.normal
 
@@ -29,7 +29,7 @@ function Slider:update(dt)
     local leftClick = love.mouse.isDown(1)
     if Utils.pointInRect(
         { x = mx, y = my }, {
-            x = self.pos.x + (self.value * self.barSize.x) - self.nubSize.x / 2,
+            x = self.pos.x + (self.value * (self.barSize.x - self.nubSize.x)),
             y = self.pos.y - self.nubSize.y / 2,
             w = self.nubSize.x, 
             h = self.nubSize.y 
@@ -75,7 +75,7 @@ function Slider:draw()
     -- love.graphics.circle('fill', self.pos.x + (self.value * self.barSize.x), self.pos.y, self.nubSize.x / 2)
     love.graphics.rectangle(
         'fill', 
-        self.pos.x + (self.value * self.barSize.x) - self.nubSize.x / 2, 
+        self.pos.x + (self.value * (self.barSize.x - self.nubSize.x)), 
         self.pos.y - self.nubSize.y / 2, 
         self.nubSize.x, 
         self.nubSize.y,
