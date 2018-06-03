@@ -38,9 +38,14 @@ function Slider:update(dt)
         if leftClick then
             self.colour = self.pressed
             if not self.prevLeftClick then
-                self.xDelta = self.pos.x + (self.value * self.barSize.x) - mx
+                self.xDelta = self.value * self.barSize.x - mx
             else
-                self.value = (mx + self.xDelta - self.pos.x) / self.barSize.x
+                self.value = (mx + self.xDelta) / self.barSize.x
+                if self.value > 1 then
+                    self.value = 1
+                elseif self.value < 0 then
+                    self.value = 0
+                end
             end
         else
             self.colour = self.highlight
