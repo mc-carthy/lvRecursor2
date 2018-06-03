@@ -14,13 +14,14 @@ function Slider:new(x, y, w, h)
 
     -- Slider colours
     self.grooveColour = Utils.colour(191)
-    self.normal = Utils.colour(191, 0, 0, 127)
-    self.highlight = Utils.colour(255, 0, 0, 127)
-    self.pressed = Utils.colour(127, 0, 0, 127)
+    self.normal = Utils.colour(191, 0, 0)
+    self.highlight = Utils.colour(255, 0, 0)
+    self.pressed = Utils.colour(127, 0, 0)
     self.disabled = Utils.colour(63)
     self.colour = self.normal
 
     self.enabled = true
+    self.movingSlider = false
 end
 
 function Slider:update(dt)
@@ -38,14 +39,8 @@ function Slider:update(dt)
         if leftClick then
             self.colour = self.pressed
             if not self.prevLeftClick then
+                self.movingSlider = true
                 self.xDelta = self.value * self.barSize.x - mx
-            else
-                self.value = (mx + self.xDelta) / self.barSize.x
-                if self.value > 1 then
-                    self.value = 1
-                elseif self.value < 0 then
-                    self.value = 0
-                end
             end
         else
             self.colour = self.highlight
@@ -56,6 +51,20 @@ function Slider:update(dt)
     else
         self.colour = self.normal
     end
+
+    if not leftClick then
+        self.movingSlider = false
+    end
+
+    if self.movingSlider then
+        self.value = (mx + self.xDelta) / self.barSize.x
+        if self.value > 1 then
+            self.value = 1
+        elseif self.value < 0 then
+            self.value = 0
+        end
+    end
+
     self.prevLeftClick = leftClick
 end
 
