@@ -6,18 +6,20 @@ local Slider = Class:derive('Slider')
 
 -- x coord is left side, y coord is centre
 function Slider:new(x, y, w, h, id, isVertical)
-    self.pos = Vector2(x, y)
+    self.barPos = Vector2(x, y)
     self.barSize = Vector2(w, h)
     self.id = id or ''
     self.isVertical = isVertical or false
+    self.value = 0
+    self.prevValue = self.value
+    self.delta = 0
+    -- TODO : Fix these hard-coded values
+    self.nubPos = Vector2(0, 0)
     if self.isVertical then
         self.nubSize = Vector2(20, 10)
     else
         self.nubSize = Vector2(10, 20)
     end
-    self.value = 0
-    self.prevValue = self.value
-    self.delta = 0
 
     -- Slider colours
     self.grooveColour = Utils.colour(191)
@@ -37,24 +39,29 @@ end
 
 function Slider:update(dt)
     if not self.enabled then return end
+
+    if self.isVertical then
+        self.nubPos.x = self.barPos.x - self.nubSize.x / 2
+        self.nubPos.y = self.barPos.y + self.barSize.y / 2 - (self.value * (self.barSize.y - self.nubSize.y)) - self.nubSize.y
+    else
+        self.nubPos.x = self.barPos.x - self.barSize.x / 2 + (self.value * (self.barSize.x - self.nubSize.x))
+        self.nubPos.y = self.barPos.y - self.nubSize.y / 2
+    end
+
     local mx, my = love.mouse.getPosition()
     local leftClick = love.mouse.isDown(1)
     local rect
     if self.isVertical then
         rect = {
-            -- x = self.pos.x - self.nubSize.x / 2,
-            -- y = self.pos.y + self.value * self.barSize.y - self.barSize.y / 2,
-            x = self.pos.x - self.nubSize.x / 2, 
-            y = self.pos.y - self.barSize.y / 2 + (self.value * (self.barSize.y - self.nubSize.y)),
+            x = self.nubPos.x,
+            y = self.nubPos.y,
             w = self.nubSize.x,
             h = self.nubSize.y 
         }
     else
         rect = {
-            -- x = self.pos.x + self.value * self.barSize.x - self.barSize.x / 2,
-            -- y = self.pos.y - self.nubSize.y / 2,
-            x = self.pos.x - self.barSize.x / 2 + (self.value * (self.barSize.x - self.nubSize.x)), 
-            y = self.pos.y - self.nubSize.y / 2,
+            x = self.nubPos.x,
+            y = self.nubPos.y,
             w = self.nubSize.x, 
             h = self.nubSize.y 
         }
@@ -65,7 +72,7 @@ function Slider:update(dt)
             if not self.prevLeftClick then
                 self.movingSlider = true
                 if self.isVertical then
-                    self.delta = self.value * self.barSize.y - my
+                    self.delta = self.value * -self.barSize.y - my
                 else
                     self.delta = self.value * self.barSize.x - mx
                 end
@@ -85,7 +92,7 @@ function Slider:update(dt)
         self.prevValue = self.value
         self.colour = self.highlight
         if self.isVertical then
-            self.value = (my + self.delta) / self.barSize.y
+            self.value = (my + self.delta) / -self.barSize.y
         else
             self.value = (mx + self.delta) / self.barSize.x
         end
@@ -108,25 +115,18 @@ function Slider:draw()
     love.graphics.setColor(self.grooveColour)
     love.graphics.rectangle(
         'fill', 
-        self.pos.x - self.barSize.x / 2, 
-        self.pos.y - self.barSize.y / 2, 
+        self.barPos.x - self.barSize.x / 2, 
+        self.barPos.y - self.barSize.y / 2, 
         self.barSize.x, 
         self.barSize.y,
         4,
         4
     )
     love.graphics.setColor(self.colour)
-    -- love.graphics.circle('fill', self.pos.x + (self.value * self.barSize.x), self.pos.y, self.nubSize.x / 2)
-    local sliderX, sliderY
-    if self.isVertical then
-        sliderX, sliderY = self.pos.x - self.nubSize.x / 2, self.pos.y - self.barSize.y / 2 + (self.value * (self.barSize.y - self.nubSize.y))
-    else
-        sliderX, sliderY = self.pos.x - self.barSize.x / 2 + (self.value * (self.barSize.x - self.nubSize.x)), self.pos.y - self.nubSize.y / 2
-    end
     love.graphics.rectangle(
         'fill', 
-        sliderX,
-        sliderY,
+        self.nubPos.x,
+        self.nubPos.y,
         self.nubSize.x, 
         self.nubSize.y,
         0,
