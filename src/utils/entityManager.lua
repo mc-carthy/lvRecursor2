@@ -38,7 +38,7 @@ function EntityManager:add(entity)
     
     entity.layer = entity.layer or 1
     entity.started = entity.started or false
-    entity.enabled = entity.enabled or true
+    entity.enabled = (entity.enabled == nil) or entity.enabled
     self.entities[#self.entities + 1] = entity
     
     table.sort(self.entities, compareLayers)
